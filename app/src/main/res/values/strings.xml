@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AudioFlashcards</string>
+    <string name="title_cards">Cards</string>
+    <string name="title_audiobooks">Audiobooks</string>
+    <string name="title_settings">Configurações</string>
+    <string name="title_activity_cards">CardsActivity</string>
+</resources>
