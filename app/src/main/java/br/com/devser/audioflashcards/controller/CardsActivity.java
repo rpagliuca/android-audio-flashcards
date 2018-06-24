@@ -1,8 +1,14 @@
 package br.com.devser.audioflashcards.controller;
 
 import android.arch.persistence.room.Room;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -17,6 +23,7 @@ import br.com.devser.audioflashcards.db.Card;
 
 public class CardsActivity extends BaseActivity {
 
+    private static final String LOG_TAG = "CardsActivity";
     public AppDatabase db;
 
     @Override
@@ -50,9 +57,24 @@ public class CardsActivity extends BaseActivity {
                 card.setDate(Calendar.getInstance().getTime());
                 db.cardDao().insertAll(card);
                 refreshList();
+
             }
         });
 
+        /* Bluetooth media controls */
+        Log.d(LOG_TAG, "Registering bluetooth media controls");
+        /* Intent filter */
+        IntentFilter mediaFilter = new IntentFilter(Intent.ACTION_MEDIA_BUTTON);
+        mediaFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+        /* Intent receiver */
+        MediaButtonIntentReceiver mMediaButtonReceiver = new MediaButtonIntentReceiver();
+        registerReceiver(mMediaButtonReceiver, mediaFilter);
+        /* Second attempt */
+        AudioManager mAudioManager = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
+        ComponentName mediaButtonReceiver = new ComponentName(getPackageName(), MediaButtonIntentReceiver.class.getName());
+        mAudioManager.registerMediaButtonEventReceiver(mediaButtonReceiver);
+
+        /* Refresh cards list */
         refreshList();
     }
 

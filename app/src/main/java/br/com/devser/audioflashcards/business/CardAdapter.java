@@ -1,8 +1,10 @@
 package br.com.devser.audioflashcards.business;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -13,6 +15,7 @@ import br.com.devser.audioflashcards.db.Card;
 
 public class CardAdapter extends BaseAdapter {
 
+    private static final String LOG_TAG = "CardAdapter";
     private final List<Card> cards;
     private final CardsActivity act;
 
@@ -42,7 +45,8 @@ public class CardAdapter extends BaseAdapter {
         View view = act.getLayoutInflater()
                 .inflate(R.layout.cardview_card, parent, false);
 
-        final AudioRecord audioRecord = new AudioRecord(act);
+        log("Adapter getView " + card.getId());
+        final AudioRecord audioRecord = new AudioRecord(act, card.getId());
 
         /* Print values */
         if (card.getDate() != null) {
@@ -63,7 +67,7 @@ public class CardAdapter extends BaseAdapter {
         (view.findViewById(R.id.btn_record)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                audioRecord.toggleRecording();
+                audioRecord.toggleRecording((ImageButton) v);
             }
         });
 
@@ -71,10 +75,14 @@ public class CardAdapter extends BaseAdapter {
         (view.findViewById(R.id.btn_play)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                audioRecord.togglePlay();
+                audioRecord.togglePlay((ImageButton) v);
             }
         });
 
         return view;
+    }
+
+    private void log(String msg) {
+        //Log.d(LOG_TAG, msg);
     }
 }

@@ -18,9 +18,14 @@
         </activity>
         <activity android:name=".controller.AudiobooksActivity" />
         <activity android:name=".controller.SettingsActivity"></activity>
+        <receiver android:name=".controller.MediaButtonIntentReceiver">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
     </application>
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18"/>
 </manifest>
