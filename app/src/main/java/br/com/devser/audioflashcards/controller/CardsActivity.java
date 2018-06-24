@@ -1,26 +1,23 @@
-package br.com.devser.audioflashcards;
+package br.com.devser.audioflashcards.controller;
 
 import android.arch.persistence.room.Room;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.time.Instant;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import br.com.devser.audioflashcards.CardAdapter;
+import br.com.devser.audioflashcards.R;
+import br.com.devser.audioflashcards.db.AppDatabase;
+import br.com.devser.audioflashcards.db.Card;
+
 public class CardsActivity extends BaseActivity {
 
-    AppDatabase db;
+    public AppDatabase db;
 
     @Override
     public int getContentViewId() {
@@ -55,7 +52,7 @@ public class CardsActivity extends BaseActivity {
         refreshList();
     }
 
-    protected void refreshList() {
+    public void refreshList() {
         List<Card> cards = db.cardDao().getAll();
         CardAdapter cardAdapter = new CardAdapter(cards, this);
         ListView listView = findViewById(R.id.list);

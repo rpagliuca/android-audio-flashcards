@@ -1,7 +1,6 @@
-package br.com.devser.audioflashcards;
+package br.com.devser.audioflashcards.controller;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import br.com.devser.audioflashcards.R;
 
 public class AudiobooksActivity extends BaseActivity {
     @Override

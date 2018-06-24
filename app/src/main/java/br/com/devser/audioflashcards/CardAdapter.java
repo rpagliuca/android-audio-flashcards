@@ -1,14 +1,14 @@
 package br.com.devser.audioflashcards;
 
-import android.app.Activity;
-import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.List;
+
+import br.com.devser.audioflashcards.controller.CardsActivity;
+import br.com.devser.audioflashcards.db.Card;
 
 public class CardAdapter extends BaseAdapter {
 
@@ -37,13 +37,20 @@ public class CardAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Card card = (Card) getItem(position);
+        final Card card = (Card) getItem(position);
         View view = act.getLayoutInflater()
                 .inflate(R.layout.cardview_card, parent, false);
         if (card.getDate() != null) {
             ((TextView) view.findViewById(R.id.date)).setText(card.getDate().toString());
         }
         ((TextView) view.findViewById(R.id.note)).setText(card.getNote());
+        (view.findViewById(R.id.btn_delete)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                act.db.cardDao().delete(card);
+                act.refreshList();
+            }
+        });
         return view;
     }
 }

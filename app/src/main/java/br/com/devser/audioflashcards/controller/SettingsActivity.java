@@ -1,9 +1,6 @@
-package br.com.devser.audioflashcards;
+package br.com.devser.audioflashcards.controller;
 
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.widget.TextView;
+import br.com.devser.audioflashcards.R;
 
 public class SettingsActivity extends BaseActivity {
     @Override

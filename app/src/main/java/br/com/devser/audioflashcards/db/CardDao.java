@@ -1,4 +1,4 @@
-package br.com.devser.audioflashcards;
+package br.com.devser.audioflashcards.db;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
