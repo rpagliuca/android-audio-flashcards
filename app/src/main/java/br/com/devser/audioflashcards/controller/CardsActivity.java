@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
-import br.com.devser.audioflashcards.CardAdapter;
+import br.com.devser.audioflashcards.business.CardAdapter;
 import br.com.devser.audioflashcards.R;
 import br.com.devser.audioflashcards.db.AppDatabase;
 import br.com.devser.audioflashcards.db.Card;
@@ -32,13 +32,16 @@ public class CardsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /* Initialize database */
         db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "database-name")
                 .allowMainThreadQueries()
                 .fallbackToDestructiveMigration()
                 .build();
-        FloatingActionButton clickButton = (FloatingActionButton) findViewById(R.id.fab);
-        clickButton.setOnClickListener( new View.OnClickListener() {
+
+        /* Insert button */
+        findViewById(R.id.fab).setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Card card = new Card();
@@ -49,6 +52,7 @@ public class CardsActivity extends BaseActivity {
                 refreshList();
             }
         });
+
         refreshList();
     }
 
