@@ -1,5 +1,7 @@
 package br.com.devser.audioflashcards.business;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +48,8 @@ public class CardAdapter extends BaseAdapter {
                 .inflate(R.layout.cardview_card, parent, false);
 
         log("Adapter getView " + card.getId());
-        final AudioRecord audioRecord = new AudioRecord(act, card.getId());
+        final AudioRecord audioRecordQuestion = new AudioRecord(act, card.getId() + "_question");
+        final AudioRecord audioRecordAnswer = new AudioRecord(act, card.getId() + "_answer");
 
         /* Print values */
         if (card.getDate() != null) {
@@ -58,24 +61,45 @@ public class CardAdapter extends BaseAdapter {
         (view.findViewById(R.id.btn_delete)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                act.db.cardDao().delete(card);
-                act.refreshList();
+                deleteConfirmation(new MyDeletableCallbackInterface() {
+                    @Override
+                    public void onConfirmDelete() {
+                        act.db.cardDao().delete(card);
+                        act.refreshList();
+                    }
+                });
             }
         });
 
-        /* Record button */
-        (view.findViewById(R.id.btn_record)).setOnClickListener(new View.OnClickListener() {
+        /* Record question button */
+        (view.findViewById(R.id.btn_record_question)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                audioRecord.toggleRecording((ImageButton) v);
+                audioRecordQuestion.toggleRecording((ImageButton) v);
             }
         });
 
-        /* Play button */
-        (view.findViewById(R.id.btn_play)).setOnClickListener(new View.OnClickListener() {
+        /* Record answer button */
+        (view.findViewById(R.id.btn_record_answer)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                audioRecord.togglePlay((ImageButton) v);
+                audioRecordAnswer.toggleRecording((ImageButton) v);
+            }
+        });
+
+        /* Play question button */
+        (view.findViewById(R.id.btn_play_question)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                audioRecordQuestion.togglePlay((ImageButton) v);
+            }
+        });
+
+        /* Play answer button */
+        (view.findViewById(R.id.btn_play_answer)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                audioRecordAnswer.togglePlay((ImageButton) v);
             }
         });
 
@@ -84,5 +108,36 @@ public class CardAdapter extends BaseAdapter {
 
     private void log(String msg) {
         //Log.d(LOG_TAG, msg);
+    }
+
+    private void deleteConfirmation(final MyDeletableCallbackInterface deletable)
+    {
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(act)
+                //set message, title, and icon
+                .setTitle("Excluir")
+                .setMessage("Deseja mesmo excluir?")
+                .setIcon(R.drawable.ic_delete_black_24dp)
+
+                .setPositiveButton("Excluir", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        deletable.onConfirmDelete();
+                        dialog.dismiss();
+                    }
+
+                })
+                .setNegativeButton("Voltar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+        myQuittingDialogBox.show();
+    }
+
+    interface MyDeletableCallbackInterface {
+        void onConfirmDelete();
     }
 }

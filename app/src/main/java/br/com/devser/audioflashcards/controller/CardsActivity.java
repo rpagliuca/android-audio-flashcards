@@ -1,8 +1,10 @@
 package br.com.devser.audioflashcards.controller;
 
+import android.app.AlertDialog;
 import android.arch.persistence.room.Room;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
@@ -76,6 +78,10 @@ public class CardsActivity extends BaseActivity {
 
         /* Refresh cards list */
         refreshList();
+
+        /* TODO: Initialize global studying session,
+         * sharing state with CardAdapter and Music Player
+         */
     }
 
     public void refreshList() {
@@ -84,4 +90,5 @@ public class CardsActivity extends BaseActivity {
         ListView listView = findViewById(R.id.list);
         listView.setAdapter(cardAdapter);
     }
+
 }
