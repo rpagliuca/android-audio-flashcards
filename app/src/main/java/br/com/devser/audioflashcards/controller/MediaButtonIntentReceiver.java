@@ -53,7 +53,7 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
                 handler.postDelayed(
                         new Runnable() {
                             public void run() {
-                                (new CommandProcessor()).processCommand(context, clickCount);
+                                CommandProcessor.getInstance().processCommand(context, clickCount);
 
                             }
                         },

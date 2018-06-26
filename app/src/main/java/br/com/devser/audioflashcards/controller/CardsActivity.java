@@ -20,6 +20,8 @@ import java.util.UUID;
 
 import br.com.devser.audioflashcards.business.CardAdapter;
 import br.com.devser.audioflashcards.R;
+import br.com.devser.audioflashcards.business.CardPlayer;
+import br.com.devser.audioflashcards.business.CommandProcessor;
 import br.com.devser.audioflashcards.db.AppDatabase;
 import br.com.devser.audioflashcards.db.Card;
 
@@ -63,6 +65,10 @@ public class CardsActivity extends BaseActivity {
             }
         });
 
+        /* Initialize singleton player */
+        CardPlayer cardPlayer = CardPlayer.getInstance(db, this);
+        CommandProcessor commandProcessor = CommandProcessor.getInstance(cardPlayer);
+
         /* Bluetooth media controls */
         Log.d(LOG_TAG, "Registering bluetooth media controls");
         /* Intent filter */
@@ -78,10 +84,6 @@ public class CardsActivity extends BaseActivity {
 
         /* Refresh cards list */
         refreshList();
-
-        /* TODO: Initialize global studying session,
-         * sharing state with CardAdapter and Music Player
-         */
     }
 
     public void refreshList() {

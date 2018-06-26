@@ -7,6 +7,26 @@ public class CommandProcessor {
 
     Context context;
 
+    private static CommandProcessor INSTANCE = null;
+    private final CardPlayer cardPlayer;
+
+    // other instance variables can be here
+
+    private CommandProcessor(CardPlayer cardPlayer) {
+        this.cardPlayer = cardPlayer;
+    };
+
+    public static CommandProcessor getInstance() {
+        return INSTANCE;
+    }
+
+    public static CommandProcessor getInstance(CardPlayer cardPlayer) {
+        if (INSTANCE == null) {
+            INSTANCE = new CommandProcessor(cardPlayer);
+        }
+        return INSTANCE;
+    }
+
     public void processCommand(Context context, Integer clickCount) {
         this.context = context;
         switch (clickCount) {
@@ -26,15 +46,18 @@ public class CommandProcessor {
     }
 
     private void click1() {
-        toast("Sim");
+        toast("Ouvindo novamente...");
+        this.cardPlayer.playAgain();
     }
 
     private void click2() {
-        toast("Não");
+        toast("Próxima!");
+        this.cardPlayer.playNext();
     }
 
     private void click3() {
-        toast("Talvez");
+        toast("Anterior!");
+        this.cardPlayer.playPrevious();
     }
 
     private void clickDefault(Integer clickCount) {

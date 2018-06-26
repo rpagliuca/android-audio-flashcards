@@ -35,7 +35,7 @@ public class AudioRecord {
     public AudioRecord(Activity act, String cardId) {
         this.act = act;
         // Record to the external cache directory for visibility
-        mFileName = act.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
+        mFileName = act.getExternalFilesDir(Environment.DIRECTORY_MUSIC).getAbsolutePath();
         mFileName += "/" + cardId + ".3gp";
         log("Filename: " + mFileName);
     }
