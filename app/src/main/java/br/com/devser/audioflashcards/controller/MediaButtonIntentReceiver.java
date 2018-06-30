@@ -37,32 +37,36 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
             int action = event.getAction();
             if (action == KeyEvent.ACTION_DOWN) {
                 log("onKeyDown");
-                Long elapsedTime;
-                if (lastTime == null) {
-                    lastTime = System.currentTimeMillis();
-                }
-                elapsedTime = System.currentTimeMillis() - lastTime;
-                if (elapsedTime > MAX_ELAPSED_TIME) {
-                    lastTime = System.currentTimeMillis();
-                    clickCount = 0;
-                } else {
-                    handler.removeCallbacksAndMessages(null);
-                }
-                clickCount++;
-                log("Key pressed (" + clickCount + "): " + event.getKeyCode());
-                handler.postDelayed(
-                        new Runnable() {
-                            public void run() {
-                                CommandProcessor.getInstance().processCommand(context, clickCount);
-
-                            }
-                        },
-                        MAX_ELAPSED_TIME
-                );
+                triggerClick(context);
 
             }
         }
 
+    }
+
+    public void triggerClick(final Context context)
+    {
+        Long elapsedTime;
+        if (lastTime == null) {
+            lastTime = System.currentTimeMillis();
+        }
+        elapsedTime = System.currentTimeMillis() - lastTime;
+        if (elapsedTime > MAX_ELAPSED_TIME) {
+            lastTime = System.currentTimeMillis();
+            clickCount = 0;
+        } else {
+            handler.removeCallbacksAndMessages(null);
+        }
+        clickCount++;
+        handler.postDelayed(
+                new Runnable() {
+                    public void run() {
+                        CommandProcessor.getInstance().processCommand(context, clickCount);
+
+                    }
+                },
+                MAX_ELAPSED_TIME
+        );
         if (isOrderedBroadcast()) {
             abortBroadcast();
         }

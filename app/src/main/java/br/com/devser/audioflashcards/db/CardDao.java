@@ -9,7 +9,7 @@ import java.util.List;
 
 @Dao
 public interface CardDao {
-    @Query("SELECT * FROM card ORDER BY date DESC")
+    @Query("SELECT * FROM card ORDER BY dateCreated DESC")
     List<Card> getAll();
 
     @Insert

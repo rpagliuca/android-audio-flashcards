@@ -52,10 +52,10 @@ public class CardAdapter extends BaseAdapter {
         final AudioRecord audioRecordAnswer = new AudioRecord(act, card.getId() + "_answer");
 
         /* Print values */
-        if (card.getDate() != null) {
-            ((TextView) view.findViewById(R.id.date)).setText(card.getDate().toString());
+        if (card.getDateCreated() != null) {
+            ((TextView) view.findViewById(R.id.date)).setText(card.getDateCreated().toString());
         }
-        ((TextView) view.findViewById(R.id.note)).setText(card.getNote());
+        ((TextView) view.findViewById(R.id.note)).setText(card.getTextNote());
 
         /* Delete button */
         (view.findViewById(R.id.btn_delete)).setOnClickListener(new View.OnClickListener() {

@@ -15,9 +15,15 @@ public class Card {
     @NonNull
     private String id;
 
-    private String note;
+    private String textNote;
 
-    private Date date;
+    private String filePositionId;
+
+    private Date dateCreated;
+
+    private Date dateModified;
+
+    private Integer status;
 
     @NonNull
     public String getId() {
@@ -28,19 +34,43 @@ public class Card {
         this.id = id;
     }
 
-    public String getNote() {
-        return note;
+    public String getTextNote() {
+        return textNote;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setTextNote(String textNote) {
+        this.textNote = textNote;
     }
 
-    public Date getDate() {
-        return date;
+    public String getFilePositionId() {
+        return filePositionId;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setFilePositionId(String filePositionId) {
+        this.filePositionId = filePositionId;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Date getDateModified() {
+        return dateModified;
+    }
+
+    public void setDateModified(Date dateModified) {
+        this.dateModified = dateModified;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

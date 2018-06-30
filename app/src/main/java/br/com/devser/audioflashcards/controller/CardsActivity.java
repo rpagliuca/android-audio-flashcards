@@ -29,6 +29,7 @@ public class CardsActivity extends BaseActivity {
 
     private static final String LOG_TAG = "CardsActivity";
     public AppDatabase db;
+    public MediaButtonIntentReceiver mMediaButtonReceiver;
 
     @Override
     public int getContentViewId() {
@@ -57,11 +58,18 @@ public class CardsActivity extends BaseActivity {
             public void onClick(View v) {
                 Card card = new Card();
                 card.setId(UUID.randomUUID().toString());
-                card.setNote(card.getId());
-                card.setDate(Calendar.getInstance().getTime());
+                card.setTextNote(card.getId());
+                card.setDateCreated(Calendar.getInstance().getTime());
                 db.cardDao().insertAll(card);
                 refreshList();
+                            }
+        });
 
+        /* Play button */
+        findViewById(R.id.fab2).setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMediaButtonReceiver.triggerClick(v.getContext());
             }
         });
 
@@ -75,7 +83,7 @@ public class CardsActivity extends BaseActivity {
         IntentFilter mediaFilter = new IntentFilter(Intent.ACTION_MEDIA_BUTTON);
         mediaFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
         /* Intent receiver */
-        MediaButtonIntentReceiver mMediaButtonReceiver = new MediaButtonIntentReceiver();
+        mMediaButtonReceiver = new MediaButtonIntentReceiver();
         registerReceiver(mMediaButtonReceiver, mediaFilter);
         /* Second attempt */
         AudioManager mAudioManager = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);

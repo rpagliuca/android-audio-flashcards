@@ -43,6 +43,9 @@ public class CardPlayer  {
 
     public void playNext() {
         refreshDb();
+        if (cards.size() == 0) {
+            return;
+        }
         if (currentCardId == null | currentAudioType == null) {
             currentListPos = 0;
             currentAudioType = "question";
@@ -61,6 +64,9 @@ public class CardPlayer  {
 
     public void playPrevious() {
         refreshDb();
+        if (cards.size() == 0) {
+            return;
+        }
         if (currentCardId == null | currentAudioType == null) {
             currentListPos = cards.size() - 1;
             currentAudioType = "question";
@@ -80,11 +86,20 @@ public class CardPlayer  {
         if (currentCardId == null | currentAudioType == null) {
             return;
         }
+        if (cards.size() == 0) {
+            return;
+        }
         this.playFile(this.getFilename(this.currentCardId, this.currentAudioType));
     }
 
     private void refreshDb() {
         this.cards = db.cardDao().getAll();
+        if (this.cards.size() == 0) {
+            this.currentListPos = null;
+        }
+        if (this.currentListPos != null) {
+            this.currentListPos = this.currentListPos % cards.size();
+        }
     }
 
     public void playFile(String fileName) {
