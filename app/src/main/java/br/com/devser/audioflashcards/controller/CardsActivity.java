@@ -62,7 +62,7 @@ public class CardsActivity extends BaseActivity {
                 card.setDateCreated(Calendar.getInstance().getTime());
                 db.cardDao().insertAll(card);
                 refreshList();
-                            }
+            }
         });
 
         /* Play button */
@@ -99,6 +99,8 @@ public class CardsActivity extends BaseActivity {
         CardAdapter cardAdapter = new CardAdapter(cards, this);
         ListView listView = findViewById(R.id.list);
         listView.setAdapter(cardAdapter);
+        cardAdapter.setListView(listView);
+        CardPlayer.getInstance(db, this).refreshDb();
     }
 
 }

@@ -2,6 +2,7 @@ package br.com.devser.audioflashcards.db;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.text.method.DateTimeKeyListener;
@@ -24,6 +25,15 @@ public class Card {
     private Date dateModified;
 
     private Integer status;
+
+    @Ignore
+    private Boolean playingQuestion = false;
+
+    @Ignore
+    private Boolean playingAnswer = false;
+
+    @Ignore
+    private Boolean isLastActive = false;
 
     @NonNull
     public String getId() {
@@ -72,5 +82,21 @@ public class Card {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public void setPlayingQuestion(Boolean playingQuestion) { this.playingQuestion = playingQuestion; }
+
+    public void setPlayingAnswer(Boolean playingAnswer) { this.playingAnswer = playingAnswer; }
+
+    public Boolean isPlayingQuestion() { return playingQuestion; }
+
+    public Boolean isPlayingAnswer() { return playingAnswer; }
+
+    public Boolean getLastActive() {
+        return isLastActive;
+    }
+
+    public void setLastActive(Boolean lastActive) {
+        isLastActive = lastActive;
     }
 }

@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.media.MediaPlayer;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 
 import java.io.IOException;
 import java.util.List;
 
+import br.com.devser.audioflashcards.App;
+import br.com.devser.audioflashcards.R;
 import br.com.devser.audioflashcards.db.AppDatabase;
 import br.com.devser.audioflashcards.db.Card;
 
@@ -58,6 +62,8 @@ public class CardPlayer  {
                 currentAudioType = "answer";
             }
         }
+        Log.d(LOG_TAG, "currentListPost: " + currentListPos);
+        Log.d(LOG_TAG, "cards.size(): " + cards.size());
         this.currentCardId = cards.get(currentListPos).getId();
         this.playFile(this.getFilename(this.currentCardId, this.currentAudioType));
     }
@@ -92,7 +98,7 @@ public class CardPlayer  {
         this.playFile(this.getFilename(this.currentCardId, this.currentAudioType));
     }
 
-    private void refreshDb() {
+    public void refreshDb() {
         this.cards = db.cardDao().getAll();
         if (this.cards.size() == 0) {
             this.currentListPos = null;
@@ -103,9 +109,20 @@ public class CardPlayer  {
     }
 
     public void playFile(String fileName) {
-        MediaPlayer mPlayer = new MediaPlayer();
+        ListView listView = (ListView) this.act.findViewById(R.id.list);
+        final Card card = (Card) listView.getAdapter().getItem(this.currentListPos);
+        if (currentAudioType == "question") {
+            card.setPlayingQuestion(true);
+        } else if (currentAudioType == "answer") {
+            card.setPlayingAnswer(true);
+        }
+        ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+        MediaPlayer mPlayer = ((App) act.getApplication()).getMediaPlayer();
         mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             public void onCompletion(MediaPlayer mp) {
+                card.setPlayingAnswer(false);
+                card.setPlayingQuestion(false);
+                ((BaseAdapter) ((ListView) act.findViewById(R.id.list)).getAdapter()).notifyDataSetChanged();
                 Log.i(LOG_TAG, "Playing complete");
             }
         });
@@ -114,6 +131,9 @@ public class CardPlayer  {
             mPlayer.prepare();
             mPlayer.start();
         } catch (IOException e) {
+            card.setPlayingAnswer(false);
+            card.setPlayingQuestion(false);
+            ((BaseAdapter) ((ListView) act.findViewById(R.id.list)).getAdapter()).notifyDataSetChanged();
             Log.e(LOG_TAG, "prepare() failed");
         }
     }

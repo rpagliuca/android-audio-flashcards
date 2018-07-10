@@ -1,25 +1,15 @@
 package br.com.devser.audioflashcards.business;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 
 import java.io.IOException;
+
+import br.com.devser.audioflashcards.App;
+import br.com.devser.audioflashcards.ui.MediaImageButton;
 
 public class AudioRecord {
 
@@ -48,7 +38,7 @@ public class AudioRecord {
         }
     }
 
-    private void onPlay(boolean start, ImageButton btn) {
+    private void onPlay(boolean start, MediaImageButton btn) {
         if (start) {
             startPlaying(btn);
         } else {
@@ -56,8 +46,8 @@ public class AudioRecord {
         }
     }
 
-    private void startPlaying(final ImageButton btn) {
-        mPlayer = new MediaPlayer();
+    private void startPlaying(final MediaImageButton btn) {
+        mPlayer = ((App) act.getApplication()).getMediaPlayer();
         mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             public void onCompletion(MediaPlayer mp) {
                 Log.i(LOG_TAG, "Playing complete");
@@ -74,7 +64,7 @@ public class AudioRecord {
     }
 
     private void stopPlaying() {
-        mPlayer.release();
+        mPlayer.reset();
         mPlayer = null;
     }
 
@@ -102,14 +92,12 @@ public class AudioRecord {
         mRecorder = null;
     }
 
-    public void toggleRecording(ImageButton btn) {
-        int color;
+    public void toggleRecording(MediaImageButton btn) {
         if (mStartRecording) {
-            color = Color.RED;
+            btn.setActive();
         } else {
-            color = Color.BLACK;
+            btn.setInactive();
         }
-        btn.setColorFilter(color);
         onRecord(mStartRecording);
         if (mStartRecording) {
             log("Stop recording " + mFileName);
@@ -119,14 +107,12 @@ public class AudioRecord {
         mStartRecording = !mStartRecording;
     }
 
-    public void togglePlay(ImageButton btn) {
-        int color;
+    public void togglePlay(MediaImageButton btn) {
         if (mStartPlaying) {
-            color = Color.RED;
+            btn.setActive();
         } else {
-            color = Color.BLACK;
+            btn.setInactive();
         }
-        btn.setColorFilter(color);
         onPlay(mStartPlaying, btn);
         if (mStartPlaying) {
             log("Stop playing " + mFileName);

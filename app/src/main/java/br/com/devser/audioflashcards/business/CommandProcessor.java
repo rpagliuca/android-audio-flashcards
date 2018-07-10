@@ -45,12 +45,12 @@ public class CommandProcessor {
         }
     }
 
-    private void click1() {
+    private void click2() {
         toast("Ouvindo novamente...");
         this.cardPlayer.playAgain();
     }
 
-    private void click2() {
+    private void click1() {
         toast("Próxima!");
         this.cardPlayer.playNext();
     }
